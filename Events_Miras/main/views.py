@@ -4,6 +4,8 @@ from django.contrib import messages
 from .forms import NewUserForm
 from django.contrib.auth import login
 from django.contrib.auth import authenticate, logout
+from django.contrib.auth import login, authenticate
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import AuthenticationForm
 from django.core.files.storage import FileSystemStorage
 from django.shortcuts import render
@@ -35,10 +37,14 @@ def login_to_account(request):
 
 def register_to_account(request):
     if request.method == "POST":
-        form = NewUserForm(request.POST, request.FILES)
-        if form.is_valid:
+        form = NewUserForm(request.POST)
+        if form.is_valid():
             user = form.save()
-            login(request, user)
-            return render(request, 'main/login.html')
+            login(request)
+            messages.success(request, 'маладес')
+            return render(request, 'main/registration_successful.html')
         else:
+            messages.error(request, 'Регистрация не получилось')
             return render(request, 'main/registration.html', {'register_form': form})
+    form = NewUserForm()
+    return render(request, 'main/registration.html', {'register_form': form})
