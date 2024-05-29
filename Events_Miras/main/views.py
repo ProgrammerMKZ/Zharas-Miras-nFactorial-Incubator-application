@@ -17,6 +17,9 @@ import requests
 def index(request):
     return render(request, 'main/index.html')
 
+def Profile(request):
+    return render(request, 'main/Profile.html')
+
 def login_to_account(request):
     if request.method == "POST":
         form = AuthenticationForm(request, data=request.POST)
@@ -27,7 +30,7 @@ def login_to_account(request):
             if user is not None:
                 login(request, user)
                 messages.info(request, f"You are now logged in as {username}.")
-                return render(request, 'main/index.html')
+                return redirect('profile')
             else:
                 messages.error(request,"Invalid username or password.")
         else:
@@ -40,7 +43,6 @@ def register_to_account(request):
         form = NewUserForm(request.POST)
         if form.is_valid():
             user = form.save()
-            login(request)
             messages.success(request, 'маладес')
             return render(request, 'main/registration_successful.html')
         else:
