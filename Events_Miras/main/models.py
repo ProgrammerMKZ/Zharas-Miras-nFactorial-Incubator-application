@@ -8,7 +8,7 @@ class Event(models.Model):
     date = models.DateField()
     location = models.CharField(max_length=100)
 
-class Registration_in_event(models.Model):
+class Registration_on_event(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     date = models.DateField(auto_now_add=True)

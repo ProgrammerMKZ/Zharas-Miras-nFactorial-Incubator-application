@@ -1,0 +1,27 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Profile</title>
+</head>
+<body>
+    <h1>{{ request.user.username }}'s Profile</h1>
+    <h2>Registered Events</h2>
+    {% if registrations %}
+        <ul>
+            {% for registration in registrations %}
+                <li>
+                    {{ registration.event.name }} on {{ registration.event.date }}
+                    <form action="{% url 'profile' %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <input type="hidden" name="event_id" value="{{ registration.event.id }}">
+                        <button type="submit">Unregister</button>
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>You have not registered for any events.</p>
+    {% endif %}
+</body>
+</html>
